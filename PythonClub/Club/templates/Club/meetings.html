@@ -4,7 +4,7 @@
 
 <ul>
     {% for m in meetingtitle %}
-    <li>{{ m.meetingtitle }}</li>
+    <li><a href="{% url 'meetingminutes' id=m.id %}"> {{ m.meetingtitle }}</a></li>
 {% endfor %}
 </ul>
 

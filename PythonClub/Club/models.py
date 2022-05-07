@@ -1,13 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.forms import DateField, TimeField, URLField
+import datetime
 
 # Create your models here.
 
 class Meeting(models.Model):
     meetingtitle=models.CharField(max_length=255)
-    meetingdate=DateField()
-    meetingtime=TimeField()
+    meetingdate=models.DateField(null=True, blank=True)
+    meetingtime=models.TimeField(null=True, blank=True)
     meetinglocation=models.TextField(max_length=255)
     meetingagenda=models.TextField(null=False)
 
@@ -23,16 +23,16 @@ class MeetingMinutes(models.Model):
     minutestext=models.TextField(null=False)
 
     def __str__(self):
-        return self.meetingid
+        return self.minutestext
 
     class Meta:
         db_table='meetingminutes'
 
 class Resource(models.Model):
     resourcename=models.CharField(max_length=255)
-    resourcetype=models.TextField(null=False)
-    resourceurl=URLField()
-    resourcedate=DateField()
+    resourcetype=models.TextField()
+    resourceurl=models.URLField(null=True, blank=True)
+    resourcedate=models.TimeField(null=True, blank=True)
     user=models.ForeignKey(User, on_delete=models.DO_NOTHING)
     resourcedescription=models.TextField(null=False)
 
@@ -45,9 +45,9 @@ class Resource(models.Model):
 class Event(models.Model):
     eventtitle=models.CharField(max_length=255)
     eventlocation=models.TextField(null=False)
-    eventdate=DateField()
-    eventtime=TimeField()
-    eventdescription=models.TextField(null=False)
+    eventdate=models.DateField(null=True, blank=True)
+    eventtime=models.TimeField(null=True, blank=True)
+    eventdescription=models.TextField(blank=True)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
