@@ -4,6 +4,7 @@ from django.forms import URLField
 from .models import Meeting, MeetingMinutes, Resource, Event
 from django.urls import reverse
 import datetime
+from .forms import MeetingForm, ResourceForm
 
 # Create your tests here.
 class MeetingNameTest(TestCase):
@@ -81,3 +82,28 @@ class EventTitleTest(TestCase):
     
     def test_tablename(self):
         self.assertEqual(str(Event._meta.db_table), 'event')
+
+class NewMeetingForm(TestCase):
+    def test_meetingform(self):
+        data = {
+            'meetingtitle' : 'hiring new staff',
+            'meetingdate' : '2022-02-22',
+            'meetingtime' : '12:00',
+            'meetinglocation' : 'Room 400',
+            'meetingagenda' : 'guidance for hiring new staff'
+        }
+        form = MeetingForm(data)
+        self.assertTrue(form.is_valid)
+
+class NewResourceForm(TestCase):
+    def test_resourceform(self):
+        data = {
+            'resourcename' : 'python security',
+            'resourcetype' : 'SOP',
+            'resourceurl' : 'https://www.python.org',
+            'resourcedate' : '2022-05-18',
+            'user' : 'saki',
+            'resourcedescription' : 'security protocols for python'
+        }
+        form = ResourceForm(data)
+        self.assertTrue(form.is_valid)
