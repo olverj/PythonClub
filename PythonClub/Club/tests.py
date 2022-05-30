@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.forms import URLField
 from .models import Meeting, MeetingMinutes, Resource, Event
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 import datetime
 from .forms import MeetingForm, ResourceForm
 
@@ -107,3 +107,25 @@ class NewResourceForm(TestCase):
         }
         form = ResourceForm(data)
         self.assertTrue(form.is_valid)
+
+class NewResAuthTest(TestCase):
+    def setUp(self):
+        self.test_user = User.objects.create_user(username = 'testuser1', password = 'password')
+        self.res = Resource.objects.create(
+            resourcename = 'python security',
+            resourcetype = 'SOP',
+            resourceurl = 'https://www.python.org',
+            resourcedate = '2022-05-18',
+            user = self.test_user,
+            resourcedescription = 'security protocols for python'
+        )
+    
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse('newresource'))
+        self.assertRedirects(response, '/accounts/login/?next=/Club/newresource/')
+
+class LoginTest(TestCase):
+    def test_login_template(self):
+        response = self.client.get(reverse('loginmessage'))
+        self.assertTemplateUsed(response, 'Club/loginmessage.html')
+
