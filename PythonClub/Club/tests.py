@@ -108,6 +108,9 @@ class NewResourceForm(TestCase):
         form = ResourceForm(data)
         self.assertTrue(form.is_valid)
 
+ 
+# Assignment 10 tests below
+
 class NewResAuthTest(TestCase):
     def setUp(self):
         self.test_user = User.objects.create_user(username = 'testuser1', password = 'password')
